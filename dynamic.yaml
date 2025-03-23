@@ -1,0 +1,47 @@
+http:
+  routers:
+    user-sign-in:
+      rule: "Path(`/api/user/sign-in`) && Method(`POST`)"
+      service: restorio-auth
+      entryPoints:
+        - web
+    
+    user-sign-up:
+      rule: "Path(`/api/user/sign-up`) && Method(`POST`)"
+      service: restorio-auth
+      entryPoints:
+        - web
+
+    user-verify:
+      rule: "Path(`/api/user/verify`) && Method(`POST`)"
+      service: restorio-auth
+      entryPoints:
+        - web
+
+    user-book-table:
+      rule: "Path(`/api/restaurant/booking`) && Method(`POST`)"
+      service: restaurant-service
+      entryPoints:
+        - web
+      middlewares:
+        - auth-middleware
+
+  services:
+    restorio-auth:
+      loadBalancer:
+        servers:
+          - url: "http://restorio-auth:8081"
+    
+    restaurant-service:
+      loadBalancer:
+        servers:
+          - url: "http://restaurant-service:8082"
+
+  middlewares:
+    auth-middleware:
+      forwardAuth:
+        address: "http://restorio-auth:8081/api/auth/check-acccess"
+        trustForwardHeader: true
+        authResponseHeaders:
+          - Authorization
+          - X-User-Id
