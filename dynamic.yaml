@@ -17,6 +17,12 @@ http:
       service: restorio-auth
       entryPoints:
         - web
+    
+    auth-refresh:
+      rule: "Path(`/api/auth/refresh`) && Method(`GET`)"
+      service: restorio-auth
+      entryPoints:
+        - web
 
     user-book-table:
       rule: "Path(`/api/restaurant/booking`) && Method(`POST`)"
@@ -43,5 +49,5 @@ http:
         address: "http://restorio-auth:8081/api/auth/check-acccess"
         trustForwardHeader: true
         authResponseHeaders:
-          - Authorization
+          - X-Roles
           - X-User-Id
