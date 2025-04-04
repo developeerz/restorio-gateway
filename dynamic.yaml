@@ -1,7 +1,7 @@
 http:
   routers:
     user-sign-in:
-      rule: "Path(`/api/user/sign-in`) && Method(`POST`)"
+      rule: "Path(`/api/user/login`) && Method(`POST`)"
       service: restorio-auth
       entryPoints:
         - web
