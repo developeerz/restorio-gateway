@@ -5,24 +5,32 @@ http:
       service: restorio-auth
       entryPoints:
         - web
+      middlewares:
+        - cors
 
     user-sign-up:
-      rule: "Path(`/api/user/sign-up`) && Method(`POST`)"
+      rule: "Path(`/api/user/sign-up`) && (Method(`POST`) || Method(`OPTIONS`))"
       service: restorio-auth
       entryPoints:
         - web
+      middlewares:
+        - cors
 
     user-verify:
       rule: "Path(`/api/user/verify`) && Method(`POST`)"
       service: restorio-auth
       entryPoints:
         - web
+      middlewares:
+        - cors
 
     auth-refresh:
       rule: "Path(`/api/auth/refresh`) && Method(`GET`)"
       service: restorio-auth
       entryPoints:
         - web
+      middlewares:
+        - cors
 
     user-book-table:
       rule: "Path(`/api/restaurant/booking`) && Method(`POST`)"
@@ -51,3 +59,15 @@ http:
         authResponseHeaders:
           - X-Roles
           - X-User-Id
+
+    cors:
+      headers:
+        accessControlAllowMethods:
+          - GET
+          - POST
+          - OPTIONS
+        accessControlAllowHeaders: "*"
+        accessControlAllowOriginList:
+          - http://localhost:3000
+        accessControlMaxAge: 3600
+        addVaryHeader: true
