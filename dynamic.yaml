@@ -1,11 +1,11 @@
 http:
   routers:
-    user-sign-in:
+    user-login:
       rule: "Path(`/api/user/login`) && Method(`POST`)"
       service: restorio-auth
       entryPoints:
         - web
-    
+
     user-sign-up:
       rule: "Path(`/api/user/sign-up`) && Method(`POST`)"
       service: restorio-auth
@@ -17,7 +17,7 @@ http:
       service: restorio-auth
       entryPoints:
         - web
-    
+
     auth-refresh:
       rule: "Path(`/api/auth/refresh`) && Method(`GET`)"
       service: restorio-auth
