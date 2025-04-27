@@ -71,11 +71,14 @@ http:
           - GET
           - POST
           - OPTIONS
-        accessControlAllowHeaders: "*"
+        accessControlAllowHeaders:
+          - Content-Type
+          - Authorization
         accessControlAllowOriginList:
           - http://localhost:3000
         accessControlMaxAge: 3600
         addVaryHeader: true
+        accessControlAllowCredentials: true
 
     user-login-path:
       replacePath:
@@ -95,4 +98,4 @@ http:
     
     book-table-path:
       replacePath:
-        path: /api/reserving-service/
+        path: /api/reserving-service
