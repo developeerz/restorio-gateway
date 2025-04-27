@@ -76,6 +76,7 @@ http:
           - http://localhost:3000
         accessControlMaxAge: 3600
         addVaryHeader: true
+        accessControlAllowCredentials: true
 
     user-login-path:
       replacePath:
