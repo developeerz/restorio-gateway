@@ -36,15 +36,6 @@ http:
         - cors
         - auth-refresh-path
 
-    book-table:
-      rule: "Path(`/api/web-gateway/restaurant/booking`) && (Method(`POST`) || Method(`OPTIONS`))"
-      service: restorio-reserving
-      entryPoints:
-        - web
-      middlewares:
-        - auth-middleware
-        - book-table-path
-
     get-tables:
       rule: "Path(`/api/web-gateway/tables`) && (Method(`GET`) || Method(`OPTIONS`))"
       service: restorio-reserving
@@ -53,6 +44,54 @@ http:
       middlewares:
         - cors
         - tables-path
+
+    get-table-free-times:
+      rule: "PathRegexp(`/api/web-gateway/reservations/[0-9-]+/free-times`) && (Method(`GET`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - tables-free-path
+
+    get-free-tables:
+      rule: "Path(`/api/web-gateway/reservations/free-tables`) && (Method(`GET`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - free-tables-path
+
+    create-new-reservation:
+      rule: "Path(`/api/web-gateway/reservations/new-reservation`) && (Method(`POST`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - auth-middleware
+        - create-new-reservation-path
+    
+    get-user-reservations:
+      rule: "Path(`/api/web-gateway/reservations/user`) && (Method(`GET`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - auth-middleware
+        - get-user-reservations-path
+
+    create-new-table:
+      rule: "Path(`/api/web-gateway/tables/new-table`) && (Method(`POST`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - auth-middleware
+        - create-new-table-path
 
   services:
     restorio-auth:
@@ -112,3 +151,24 @@ http:
     tables-path:
       replacePath:
         path: /tables
+    
+    tables-free-path:
+      replacePathRegex:
+        regex: "^/api/web-gateway/reservations/([0-9]+)/free-times$"
+        replacement: "/api/reservations/$1/free-times"
+    
+    free-tables-path:
+      replacePath:
+        path: /reservations/free-tables
+
+    create-new-reservation-path:
+      replacePath:
+        path: /reservations/new-reservation
+
+    get-user-reservations-path:
+      replacePath:
+        path: /reservations/user
+
+    create-new-table-path:
+      replacePath:
+        path: /tables/new-table
