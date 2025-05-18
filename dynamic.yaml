@@ -38,12 +38,21 @@ http:
 
     book-table:
       rule: "Path(`/api/web-gateway/restaurant/booking`) && (Method(`POST`) || Method(`OPTIONS`))"
-      service: restaurant-service
+      service: restorio-reserving
       entryPoints:
         - web
       middlewares:
         - auth-middleware
         - book-table-path
+
+    get-tables:
+      rule: "Path(`/api/web-gateway/tables`) && (Method(`GET`) || Method(`OPTIONS`))"
+      service: restorio-reserving
+      entryPoints:
+        - web
+      middlewares:
+        - cors
+        - tables-path
 
   services:
     restorio-auth:
@@ -51,10 +60,10 @@ http:
         servers:
           - url: "http://restorio-auth:8081"
     
-    restaurant-service:
+    restorio-reserving:
       loadBalancer:
         servers:
-          - url: "http://restaurant-service:8082"
+          - url: "http://restorio-reserving:8082"
 
   middlewares:
     auth-middleware:
@@ -99,3 +108,7 @@ http:
     book-table-path:
       replacePath:
         path: /api/reserving-service
+
+    tables-path:
+      replacePath:
+        path: /tables
