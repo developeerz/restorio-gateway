@@ -107,7 +107,7 @@ http:
   middlewares:
     auth-middleware:
       forwardAuth:
-        address: "http://restorio-auth:8081/api/auth-service/auth/check-acccess"
+        address: "http://restorio-auth:8081/api/auth-service/auth/check-access"
         trustForwardHeader: true
         authResponseHeaders:
           - X-Roles
