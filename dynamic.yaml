@@ -46,13 +46,13 @@ http:
         - tables-path
 
     get-table-free-times:
-      rule: "PathRegexp(`/api/web-gateway/reservations/[0-9-]+/free-times`) && (Method(`GET`) || Method(`OPTIONS`))"
+      rule: "PathRegexp(`/api/web-gateway/tables/[0-9-]+/free-times`) && (Method(`GET`) || Method(`OPTIONS`))"
       service: restorio-reserving
       entryPoints:
         - web
       middlewares:
         - cors
-        - tables-free-path
+        - tables-free-times-path
 
     get-free-tables:
       rule: "Path(`/api/web-gateway/reservations/free-tables`) && (Method(`GET`) || Method(`OPTIONS`))"
@@ -152,10 +152,10 @@ http:
       replacePath:
         path: /tables
     
-    tables-free-path:
+    tables-free-times-path:
       replacePathRegex:
-        regex: "^/api/web-gateway/reservations/([0-9]+)/free-times$"
-        replacement: "/api/reservations/$1/free-times"
+        regex: "^/api/web-gateway/tables/([0-9]+)/free-times$"
+        replacement: "/tables/$1/free-times"
     
     free-tables-path:
       replacePath:
